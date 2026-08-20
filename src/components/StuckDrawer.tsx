@@ -22,7 +22,7 @@ export function StuckButton() {
 export function StuckDrawer() {
   const { stuckOpen, setStuckOpen } = useApp();
   const [reason, setReason] = useState<string | null>(null);
-  const [style, setStyle] = useState(EXPLAIN_STYLES[0].id);
+  const [style, setStyle] = useState(EXPLAIN_STYLES[0]!.id);
 
   if (!stuckOpen) return null;
   const active = EXPLAIN_STYLES.find((s) => s.id === style)!;
