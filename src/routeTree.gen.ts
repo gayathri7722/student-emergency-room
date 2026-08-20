@@ -10,33 +10,167 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as DamageControlRouteImport } from './routes/damage-control'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DiagnosisRouteImport } from './routes/diagnosis'
+import { Route as EmergencyRouteImport } from './routes/emergency'
+import { Route as MiracleRouteImport } from './routes/miracle'
+import { Route as MissionRouteImport } from './routes/mission'
+import { Route as PlanRouteImport } from './routes/plan'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ProgressRouteImport } from './routes/progress'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DamageControlRoute = DamageControlRouteImport.update({
+  id: '/damage-control',
+  path: '/damage-control',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiagnosisRoute = DiagnosisRouteImport.update({
+  id: '/diagnosis',
+  path: '/diagnosis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmergencyRoute = EmergencyRouteImport.update({
+  id: '/emergency',
+  path: '/emergency',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MiracleRoute = MiracleRouteImport.update({
+  id: '/miracle',
+  path: '/miracle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MissionRoute = MissionRouteImport.update({
+  id: '/mission',
+  path: '/mission',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanRoute = PlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/community': typeof CommunityRoute
+  '/damage-control': typeof DamageControlRoute
+  '/dashboard': typeof DashboardRoute
+  '/diagnosis': typeof DiagnosisRoute
+  '/emergency': typeof EmergencyRoute
+  '/miracle': typeof MiracleRoute
+  '/mission': typeof MissionRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/community': typeof CommunityRoute
+  '/damage-control': typeof DamageControlRoute
+  '/dashboard': typeof DashboardRoute
+  '/diagnosis': typeof DiagnosisRoute
+  '/emergency': typeof EmergencyRoute
+  '/miracle': typeof MiracleRoute
+  '/mission': typeof MissionRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/community': typeof CommunityRoute
+  '/damage-control': typeof DamageControlRoute
+  '/dashboard': typeof DashboardRoute
+  '/diagnosis': typeof DiagnosisRoute
+  '/emergency': typeof EmergencyRoute
+  '/miracle': typeof MiracleRoute
+  '/mission': typeof MissionRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/community'
+    | '/damage-control'
+    | '/dashboard'
+    | '/diagnosis'
+    | '/emergency'
+    | '/miracle'
+    | '/mission'
+    | '/plan'
+    | '/profile'
+    | '/progress'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/community'
+    | '/damage-control'
+    | '/dashboard'
+    | '/diagnosis'
+    | '/emergency'
+    | '/miracle'
+    | '/mission'
+    | '/plan'
+    | '/profile'
+    | '/progress'
+  id:
+    | '__root__'
+    | '/'
+    | '/community'
+    | '/damage-control'
+    | '/dashboard'
+    | '/diagnosis'
+    | '/emergency'
+    | '/miracle'
+    | '/mission'
+    | '/plan'
+    | '/profile'
+    | '/progress'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CommunityRoute: typeof CommunityRoute
+  DamageControlRoute: typeof DamageControlRoute
+  DashboardRoute: typeof DashboardRoute
+  DiagnosisRoute: typeof DiagnosisRoute
+  EmergencyRoute: typeof EmergencyRoute
+  MiracleRoute: typeof MiracleRoute
+  MissionRoute: typeof MissionRoute
+  PlanRoute: typeof PlanRoute
+  ProfileRoute: typeof ProfileRoute
+  ProgressRoute: typeof ProgressRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +182,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/damage-control': {
+      id: '/damage-control'
+      path: '/damage-control'
+      fullPath: '/damage-control'
+      preLoaderRoute: typeof DamageControlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diagnosis': {
+      id: '/diagnosis'
+      path: '/diagnosis'
+      fullPath: '/diagnosis'
+      preLoaderRoute: typeof DiagnosisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emergency': {
+      id: '/emergency'
+      path: '/emergency'
+      fullPath: '/emergency'
+      preLoaderRoute: typeof EmergencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/miracle': {
+      id: '/miracle'
+      path: '/miracle'
+      fullPath: '/miracle'
+      preLoaderRoute: typeof MiracleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mission': {
+      id: '/mission'
+      path: '/mission'
+      fullPath: '/mission'
+      preLoaderRoute: typeof MissionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plan': {
+      id: '/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof PlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CommunityRoute: CommunityRoute,
+  DamageControlRoute: DamageControlRoute,
+  DashboardRoute: DashboardRoute,
+  DiagnosisRoute: DiagnosisRoute,
+  EmergencyRoute: EmergencyRoute,
+  MiracleRoute: MiracleRoute,
+  MissionRoute: MissionRoute,
+  PlanRoute: PlanRoute,
+  ProfileRoute: ProfileRoute,
+  ProgressRoute: ProgressRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
