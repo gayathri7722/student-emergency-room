@@ -30,12 +30,13 @@ const MESSAGES = [
 
 function Diagnosis() {
   const { assessment } = useApp();
-  const [loading, setLoading] = useState(true);
+  const { plan, planStatus, planError, retry } = useEnsurePlan();
+  const [minDone, setMinDone] = useState(false);
   const [msg, setMsg] = useState(0);
 
   useEffect(() => {
     const i = setInterval(() => setMsg((m) => (m + 1) % MESSAGES.length), 900);
-    const t = setTimeout(() => setLoading(false), 3200);
+    const t = setTimeout(() => setMinDone(true), 2400);
     return () => {
       clearInterval(i);
       clearTimeout(t);
@@ -47,6 +48,9 @@ function Diagnosis() {
   const available = Math.max(2, Number(assessment.hours) || 6);
   const deficit = Math.max(0, workload - available);
   const recovery = Math.max(28, 92 - severity / 2 - deficit * 3);
+  const mustCount = plan?.topics.filter((t) => t.tier === "must").length ?? 0;
+
+  const loading = !minDone || planStatus === "loading" || planStatus === "idle";
 
   if (loading) {
     return (
@@ -72,52 +76,23 @@ function Diagnosis() {
           <StatusDot /> DIAGNOSIS COMPLETE
         </Chip>
         <h1 className="mt-4 text-3xl font-bold sm:text-4xl">
-          {assessment.subject}: severe, but survivable
+          {plan?.headline ?? `${assessment.subject}: severe, but survivable`}
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          {assessment.examName} · {assessment.deadline}. You're behind, not beyond saving. Here's the
-          honest read.
+          {assessment.examName} · {assessment.deadline}.{" "}
+          {plan?.summary ?? "You're behind, not beyond saving. Here's the honest read."}
         </p>
 
-        <Panel className="mt-8">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                Severity level
-              </p>
-              <p className="mt-1 text-4xl font-bold text-primary">
-                {severity >= 80 ? "CRITICAL" : severity >= 55 ? "SERIOUS" : "MANAGEABLE"}
-              </p>
-            </div>
-            <span className="text-3xl font-bold">{Math.round(severity)}%</span>
-          </div>
-          <Bar className="mt-4 h-3" value={severity} />
-        </Panel>
+        {planStatus === "error" && (
+          <Panel className="mt-6 border-warning/40 bg-warning/10">
+            <p className="text-sm font-semibold text-warning">{planError}</p>
+            <Btn className="mt-3" tone="outline" onClick={() => void retry()}>
+              Try again
+            </Btn>
+          </Panel>
+        )}
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <Stat icon={Clock} label="Time remaining" value={assessment.time} tone="text-warning" />
-          <Stat icon={Layers} label="Estimated workload" value={`${workload} hrs`} tone="text-foreground" />
-          <Stat
-            icon={TrendingDown}
-            label="Time deficit"
-            value={deficit > 0 ? `-${deficit} hrs` : "None"}
-            tone="text-primary"
-          />
-          <Stat icon={Gauge} label="Priority topics" value="3 of 9" tone="text-ai" />
-          <Stat
-            icon={Activity}
-            label="Recovery probability"
-            value={`${Math.round(recovery)}%`}
-            tone="text-success"
-          />
-        </div>
 
-        <Panel className="mt-4">
-          <p className="text-sm text-muted-foreground">
-            These numbers are demo estimates generated from your answers — useful for prioritising,
-            not a prediction of your actual grade.
-          </p>
-        </Panel>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link to="/plan">
