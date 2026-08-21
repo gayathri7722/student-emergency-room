@@ -143,6 +143,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     missionsDone,
     completeMission: () => setMissionsDone((m) => m + 1),
     xp: 2480 + missionsDone * 120,
+    plan,
+    planStatus,
+    planError,
+    buildPlan,
+
   };
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
