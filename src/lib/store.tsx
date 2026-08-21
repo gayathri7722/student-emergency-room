@@ -1,4 +1,8 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+
+import { generateStudyPlan } from "./plan.functions";
+import type { StudyPlan } from "./plan-types";
+
 
 export type Assessment = {
   situations: string[];
