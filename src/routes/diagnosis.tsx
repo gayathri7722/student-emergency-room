@@ -4,6 +4,8 @@ import { Activity, ArrowRight, Clock, Gauge, Layers, TrendingDown } from "lucide
 import { AppShell } from "@/components/AppShell";
 import { Bar, Btn, Chip, Panel, StatusDot } from "@/components/ui-kit";
 import { useApp } from "@/lib/store";
+import { useEnsurePlan } from "@/lib/use-plan";
+
 
 export const Route = createFileRoute("/diagnosis")({
   head: () => ({
@@ -92,6 +94,50 @@ function Diagnosis() {
           </Panel>
         )}
 
+        <Panel className="mt-8">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                Severity level
+              </p>
+              <p className="mt-1 text-4xl font-bold text-primary">
+                {severity >= 80 ? "CRITICAL" : severity >= 55 ? "SERIOUS" : "MANAGEABLE"}
+              </p>
+            </div>
+            <span className="text-3xl font-bold">{Math.round(severity)}%</span>
+          </div>
+          <Bar className="mt-4 h-3" value={severity} />
+        </Panel>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <Stat icon={Clock} label="Time remaining" value={assessment.time} tone="text-warning" />
+          <Stat icon={Layers} label="Estimated workload" value={`${workload} hrs`} tone="text-foreground" />
+          <Stat
+            icon={TrendingDown}
+            label="Time deficit"
+            value={deficit > 0 ? `-${deficit} hrs` : "None"}
+            tone="text-primary"
+          />
+          <Stat
+            icon={Gauge}
+            label="Priority topics"
+            value={plan ? `${mustCount} of ${plan.topics.length}` : "—"}
+            tone="text-ai"
+          />
+          <Stat
+            icon={Activity}
+            label="Recovery probability"
+            value={`${Math.round(recovery)}%`}
+            tone="text-success"
+          />
+        </div>
+
+        <Panel className="mt-4">
+          <p className="text-sm text-muted-foreground">
+            These estimates are generated from your own answers — useful for prioritising, not a
+            prediction of your actual grade.
+          </p>
+        </Panel>
 
 
         <div className="mt-8 flex flex-wrap gap-3">
