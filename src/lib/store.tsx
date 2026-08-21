@@ -43,6 +43,8 @@ const defaultAssessment: Assessment = {
   mistakes: ["procrastinated", "underestimated"],
 };
 
+export type PlanStatus = "idle" | "loading" | "ready" | "error";
+
 type Ctx = {
   name: string;
   setName: (n: string) => void;
@@ -54,6 +56,10 @@ type Ctx = {
   missionsDone: number;
   completeMission: () => void;
   xp: number;
+  plan: StudyPlan | null;
+  planStatus: PlanStatus;
+  planError: string | null;
+  buildPlan: (a: Assessment) => Promise<void>;
 };
 
 const AppCtx = createContext<Ctx | null>(null);
@@ -63,6 +69,38 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [assessment, setAssessment] = useState<Assessment>(defaultAssessment);
   const [stuckOpen, setStuckOpen] = useState(false);
   const [missionsDone, setMissionsDone] = useState(3);
+  const [plan, setPlan] = useState<StudyPlan | null>(null);
+  const [planStatus, setPlanStatus] = useState<PlanStatus>("idle");
+  const [planError, setPlanError] = useState<string | null>(null);
+
+  const buildPlan = useCallback(async (a: Assessment) => {
+    setPlanStatus("loading");
+    setPlanError(null);
+    try {
+      const result = await generateStudyPlan({
+        data: {
+          subject: a.subject,
+          examName: a.examName,
+          deadline: a.deadline,
+          time: a.time,
+          topics: a.topics,
+          difficulty: a.difficulty,
+          hours: a.hours,
+          targetGrade: a.targetGrade,
+          progress: a.progress,
+          situations: a.situations,
+          mistakes: a.mistakes,
+        },
+      });
+      setPlan(result);
+      setPlanStatus("ready");
+    } catch (error) {
+      console.error(error);
+      setPlanError(error instanceof Error ? error.message : "Could not build your plan.");
+      setPlanStatus("error");
+    }
+  }, []);
+
 
   const emergencies = useMemo<Emergency[]>(
     () => [
