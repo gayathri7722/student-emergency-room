@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Btn, Chip, Panel } from "@/components/ui-kit";
-import { PHASES, TIER_META, TOPICS, type Tier } from "@/lib/mock";
+import { TIER_META, type Tier } from "@/lib/mock";
 import { useApp } from "@/lib/store";
+import { useEnsurePlan } from "@/lib/use-plan";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/plan")({
@@ -26,21 +27,48 @@ const TIERS: Tier[] = ["must", "should", "maybe", "ignore"];
 
 function PlanPage() {
   const { assessment } = useApp();
+  const { plan, planStatus, planError, retry } = useEnsurePlan();
+
+  if (!plan) {
+    return (
+      <AppShell>
+        <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
+          {planStatus === "error" ? (
+            <>
+              <h1 className="text-2xl font-bold">Couldn't build your plan</h1>
+              <p className="mt-2 max-w-md text-muted-foreground">{planError}</p>
+              <Btn className="mt-5" onClick={() => void retry()}>
+                Try again
+              </Btn>
+            </>
+          ) : (
+            <>
+              <Loader2 className="size-8 animate-spin text-primary" />
+              <h1 className="mt-6 text-2xl font-bold">Building your {assessment.subject} plan</h1>
+              <p className="mt-2 text-muted-foreground">Ranking your topics by what earns marks.</p>
+            </>
+          )}
+        </div>
+      </AppShell>
+    );
+  }
+
   return (
     <AppShell>
       <div className="animate-rise">
         <Chip tone="success">RECOVERY PLAN</Chip>
         <h1 className="mt-4 text-3xl font-bold sm:text-4xl">
-          {assessment.subject} — five phases, no filler
+          {plan.subject} — five phases, no filler
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Work top to bottom. If you run out of time, everything after your current phase was
-          optional anyway.
+          Built from your answers: {assessment.examName || "your assessment"} ·{" "}
+          {assessment.time || "limited time"} · {assessment.difficulty || "unknown"} difficulty. Work
+          top to bottom.
         </p>
 
         <div className="mt-8 space-y-4">
-          {PHASES.map((p, i) => (
-            <Panel key={p.name}>
+          {plan.phases.map((p, i) => (
+            <Panel key={p.name + i}>
               <div className="flex flex-wrap items-center gap-3">
                 <span className="grid size-9 place-items-center rounded-xl bg-surface-2 font-display font-bold">
                   {i + 1}
@@ -74,26 +102,32 @@ function PlanPage() {
 
         <h2 className="mt-12 text-2xl font-bold">Don't Study Everything</h2>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Nine topics, sorted by what actually earns marks in the time you have.
+          Your {plan.subject} topics, sorted by what actually earns marks in the time you have.
         </p>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {TIERS.map((tier) => (
-            <Panel key={tier} className={cn("border", TIER_META[tier].klass)}>
-              <div className="flex items-center gap-2">
-                <span className={cn("size-2.5 rounded-full", TIER_META[tier].dot)} />
-                <h3 className="font-bold">{TIER_META[tier].label}</h3>
-              </div>
-              <ul className="mt-4 space-y-3">
-                {TOPICS.filter((t) => t.tier === tier).map((t) => (
-                  <li key={t.name}>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.why}</p>
-                  </li>
-                ))}
-              </ul>
-            </Panel>
-          ))}
+          {TIERS.map((tier) => {
+            const items = plan.topics.filter((t) => t.tier === tier);
+            return (
+              <Panel key={tier} className={cn("border", TIER_META[tier].klass)}>
+                <div className="flex items-center gap-2">
+                  <span className={cn("size-2.5 rounded-full", TIER_META[tier].dot)} />
+                  <h3 className="font-bold">{TIER_META[tier].label}</h3>
+                </div>
+                <ul className="mt-4 space-y-3">
+                  {items.length === 0 && (
+                    <li className="text-xs text-muted-foreground">Nothing in this tier.</li>
+                  )}
+                  {items.map((t) => (
+                    <li key={t.name}>
+                      <p className="text-sm font-semibold">{t.name}</p>
+                      <p className="text-xs text-muted-foreground">{t.why}</p>
+                    </li>
+                  ))}
+                </ul>
+              </Panel>
+            );
+          })}
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">
