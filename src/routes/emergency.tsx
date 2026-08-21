@@ -32,7 +32,7 @@ const STEP_TITLES = [
 
 function EmergencyWizard() {
   const navigate = useNavigate();
-  const { assessment, setAssessment } = useApp();
+  const { assessment, setAssessment, buildPlan } = useApp();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState(assessment);
   const [customTime, setCustomTime] = useState("");
@@ -55,8 +55,11 @@ function EmergencyWizard() {
       setStep(step + 1);
       return;
     }
-    setAssessment(draft);
+    const final = step === 1 && customTime ? { ...draft, time: customTime } : draft;
+    setAssessment(final);
+    void buildPlan(final);
     navigate({ to: "/diagnosis" });
+
   };
 
   return (
