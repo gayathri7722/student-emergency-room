@@ -30,11 +30,26 @@ const STEP_TITLES = [
   "What went wrong? Be honest, we don't judge.",
 ];
 
+const blankAssessment = {
+  situations: [] as string[],
+  time: "",
+  subject: "",
+  examName: "",
+  deadline: "",
+  progress: 0,
+  targetGrade: "Pass comfortably (65%+)",
+  topics: "",
+  difficulty: "Hard",
+  hours: "",
+  fileName: "",
+  mistakes: [] as string[],
+};
+
 function EmergencyWizard() {
   const navigate = useNavigate();
-  const { assessment, setAssessment, buildPlan } = useApp();
+  const { setAssessment, buildPlan } = useApp();
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState(assessment);
+  const [draft, setDraft] = useState({ ...blankAssessment });
   const [customTime, setCustomTime] = useState("");
 
   const toggle = (key: "situations" | "mistakes", id: string) =>
