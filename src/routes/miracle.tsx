@@ -26,6 +26,8 @@ export const Route = createFileRoute("/miracle")({
 const TOTAL = 15 * 60;
 
 function Miracle() {
+  const { plan } = useEnsurePlan();
+  const steps = plan?.miracleSteps ?? MIRACLE_STEPS;
   const [elapsed, setElapsed] = useState(0);
   const [running, setRunning] = useState(false);
 
@@ -35,7 +37,7 @@ function Miracle() {
     return () => clearInterval(i);
   }, [running]);
 
-  const activeIdx = Math.min(MIRACLE_STEPS.length - 1, Math.floor(elapsed / 180));
+  const activeIdx = Math.min(steps.length - 1, Math.floor(elapsed / 180));
   const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
   const ss = String(elapsed % 60).padStart(2, "0");
 
@@ -72,7 +74,7 @@ function Miracle() {
         </Panel>
 
         <div className="mt-6 space-y-3">
-          {MIRACLE_STEPS.map((s, i) => (
+          {steps.map((s, i) => (
             <div
               key={s.time}
               className={cn(
