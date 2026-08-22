@@ -20,12 +20,13 @@ export function StuckButton() {
 }
 
 export function StuckDrawer() {
-  const { stuckOpen, setStuckOpen } = useApp();
+  const { stuckOpen, setStuckOpen, plan } = useApp();
+  const styles = plan?.explanations?.length ? plan.explanations : EXPLAIN_STYLES;
   const [reason, setReason] = useState<string | null>(null);
-  const [style, setStyle] = useState(EXPLAIN_STYLES[0]!.id);
+  const [styleIdx, setStyleIdx] = useState(0);
 
   if (!stuckOpen) return null;
-  const active = EXPLAIN_STYLES.find((s) => s.id === style)!;
+  const active = styles[Math.min(styleIdx, styles.length - 1)]!;
 
   const close = () => {
     setStuckOpen(false);
@@ -45,7 +46,7 @@ export function StuckDrawer() {
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {reason
-                ? `Same concept, seven ways. Example topic: integration by parts.`
+                ? `Same concept, ${styles.length} ways. Topic: ${plan?.missionFocus ?? "your current focus"}.`
                 : "Be specific. Vague panic gets vague help."}
             </p>
           </div>
@@ -79,13 +80,13 @@ export function StuckDrawer() {
               <ArrowLeft className="size-3.5" /> {reason}
             </button>
             <div className="flex flex-wrap gap-2">
-              {EXPLAIN_STYLES.map((s) => (
+              {styles.map((s, i) => (
                 <button
-                  key={s.id}
-                  onClick={() => setStyle(s.id)}
+                  key={s.label + i}
+                  onClick={() => setStyleIdx(i)}
                   className={cn(
                     "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
-                    style === s.id
+                    styleIdx === i
                       ? "border-ai bg-ai/20 text-ai"
                       : "border-border bg-surface-2 text-muted-foreground hover:text-foreground",
                   )}
@@ -98,7 +99,7 @@ export function StuckDrawer() {
               {active.text}
             </div>
             <p className="text-xs text-muted-foreground">
-              Demo explanations — this build ships with sample content, not a live model.
+              Explanations generated for your subject. Double-check anything you'll write in an exam.
             </p>
             <Btn tone="ai" className="w-full" onClick={close}>
               Got it, back to work
