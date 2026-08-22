@@ -4,6 +4,7 @@ import { Pause, Play, RotateCcw } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Bar, Btn, Chip, Panel } from "@/components/ui-kit";
 import { useApp } from "@/lib/store";
+import { useEnsurePlan } from "@/lib/use-plan";
 
 export const Route = createFileRoute("/mission")({
   head: () => ({
@@ -74,7 +75,7 @@ function Mission() {
           <p className="font-display text-7xl font-bold tabular-nums sm:text-8xl">
             {mm}:{ss}
           </p>
-          <Bar className="mt-6" value={((TOTAL - left) / TOTAL) * 100} tone="success" />
+          <Bar className="mt-6" value={((total - left) / total) * 100} tone="success" />
           <p className="mt-3 text-xs text-muted-foreground">
             {running ? "Running. Phone face down." : left === 0 ? "Time's up." : "Paused"}
           </p>
@@ -94,7 +95,7 @@ function Mission() {
 
           <button
             onClick={() => {
-              setLeft(TOTAL);
+              setLeft(total);
               setRunning(false);
               setDone(false);
             }}
