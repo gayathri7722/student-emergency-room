@@ -30,11 +30,26 @@ const STEP_TITLES = [
   "What went wrong? Be honest, we don't judge.",
 ];
 
+const blankAssessment = {
+  situations: [] as string[],
+  time: "",
+  subject: "",
+  examName: "",
+  deadline: "",
+  progress: 0,
+  targetGrade: "Pass comfortably (65%+)",
+  topics: "",
+  difficulty: "Hard",
+  hours: "",
+  fileName: "",
+  mistakes: [] as string[],
+};
+
 function EmergencyWizard() {
   const navigate = useNavigate();
-  const { assessment, setAssessment, buildPlan } = useApp();
+  const { setAssessment, buildPlan } = useApp();
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState(assessment);
+  const [draft, setDraft] = useState({ ...blankAssessment });
   const [customTime, setCustomTime] = useState("");
 
   const toggle = (key: "situations" | "mistakes", id: string) =>
@@ -136,6 +151,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.subject}
                   onChange={(e) => setDraft({ ...draft, subject: e.target.value })}
+                  placeholder="e.g. Organic Chemistry"
                   className={inputCls}
                 />
               </Field>
@@ -143,6 +159,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.examName}
                   onChange={(e) => setDraft({ ...draft, examName: e.target.value })}
+                  placeholder="e.g. Midterm 2"
                   className={inputCls}
                 />
               </Field>
@@ -150,6 +167,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.deadline}
                   onChange={(e) => setDraft({ ...draft, deadline: e.target.value })}
+                  placeholder="e.g. Tomorrow, 9:00 AM"
                   className={inputCls}
                 />
               </Field>
@@ -191,6 +209,7 @@ function EmergencyWizard() {
                   rows={3}
                   value={draft.topics}
                   onChange={(e) => setDraft({ ...draft, topics: e.target.value })}
+                  placeholder="List the topics you need to cover"
                   className={inputCls}
                 />
               </Field>
@@ -198,6 +217,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.hours}
                   onChange={(e) => setDraft({ ...draft, hours: e.target.value })}
+                  placeholder="e.g. 6"
                   className={inputCls}
                 />
               </Field>
