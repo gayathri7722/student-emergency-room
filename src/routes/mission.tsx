@@ -65,11 +65,14 @@ function Mission() {
   return (
     <AppShell>
       <div className="mx-auto max-w-2xl animate-rise text-center">
-        <Chip tone="primary">SURVIVAL MODE · PHASE 1 STABILIZE</Chip>
+        <Chip tone="primary">
+          SURVIVAL MODE · PHASE 1 {plan?.phases[0]?.name?.toUpperCase() ?? "STABILIZE"}
+        </Chip>
         <h1 className="mt-5 text-3xl font-bold">{assessment.subject}</h1>
         <p className="mt-1 text-muted-foreground">
-          Mission: lock in the Must Know list — integration by parts first.
+          Mission: {plan?.missionFocus ?? "lock in your Must Know list"} first.
         </p>
+
 
         <Panel className="mt-8">
           <p className="font-display text-7xl font-bold tabular-nums sm:text-8xl">
@@ -81,7 +84,15 @@ function Mission() {
           </p>
 
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Btn size="lg" onClick={() => setRunning((r) => !r)} disabled={left === 0}>
+            <Btn
+              size="lg"
+              onClick={() => {
+                setStarted(true);
+                setRunning((r) => !r);
+              }}
+              disabled={left === 0}
+            >
+
               {running ? <Pause className="size-5" /> : <Play className="size-5" />}
               {running ? "Pause" : "Start"}
             </Btn>
