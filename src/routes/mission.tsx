@@ -20,15 +20,21 @@ export const Route = createFileRoute("/mission")({
   component: Mission,
 });
 
-const TOTAL = 30 * 60;
-
 function Mission() {
   const { assessment, setStuckOpen, completeMission } = useApp();
+  const { plan } = useEnsurePlan();
   const navigate = useNavigate();
-  const [left, setLeft] = useState(TOTAL);
+  const total = (plan?.missionMinutes ?? 30) * 60;
+  const [left, setLeft] = useState(total);
+  const [started, setStarted] = useState(false);
   const [running, setRunning] = useState(false);
   const [done, setDone] = useState(false);
   const ref = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (!started) setLeft(total);
+  }, [total, started]);
+
 
   useEffect(() => {
     if (!running) return;
