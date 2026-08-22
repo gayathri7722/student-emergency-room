@@ -2,7 +2,6 @@ import { useState } from "react";
 import { X, LifeBuoy, ArrowLeft } from "lucide-react";
 import { useApp } from "@/lib/store";
 import { EXPLAIN_STYLES, STUCK_REASONS } from "@/lib/mock";
-import { useEnsurePlan } from "@/lib/use-plan";
 import { Btn, Chip } from "./ui-kit";
 import { cn } from "@/lib/utils";
 
@@ -21,8 +20,7 @@ export function StuckButton() {
 }
 
 export function StuckDrawer() {
-  const { stuckOpen, setStuckOpen } = useApp();
-  const { plan } = useEnsurePlan();
+  const { stuckOpen, setStuckOpen, plan } = useApp();
   const styles = plan?.explanations?.length ? plan.explanations : EXPLAIN_STYLES;
   const [reason, setReason] = useState<string | null>(null);
   const [styleIdx, setStyleIdx] = useState(0);
