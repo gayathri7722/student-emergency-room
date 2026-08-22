@@ -4,6 +4,8 @@ import { Zap } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Bar, Btn, Chip, Panel } from "@/components/ui-kit";
 import { MIRACLE_STEPS } from "@/lib/mock";
+import { useEnsurePlan } from "@/lib/use-plan";
+
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/miracle")({

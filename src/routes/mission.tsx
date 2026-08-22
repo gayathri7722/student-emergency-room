@@ -106,8 +106,10 @@ function Mission() {
 
           <button
             onClick={() => {
+              setStarted(false);
               setLeft(total);
               setRunning(false);
+
               setDone(false);
             }}
             className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
