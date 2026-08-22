@@ -151,6 +151,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.subject}
                   onChange={(e) => setDraft({ ...draft, subject: e.target.value })}
+                  placeholder="e.g. Organic Chemistry"
                   className={inputCls}
                 />
               </Field>
@@ -158,6 +159,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.examName}
                   onChange={(e) => setDraft({ ...draft, examName: e.target.value })}
+                  placeholder="e.g. Midterm 2"
                   className={inputCls}
                 />
               </Field>
@@ -165,6 +167,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.deadline}
                   onChange={(e) => setDraft({ ...draft, deadline: e.target.value })}
+                  placeholder="e.g. Tomorrow, 9:00 AM"
                   className={inputCls}
                 />
               </Field>
@@ -206,6 +209,7 @@ function EmergencyWizard() {
                   rows={3}
                   value={draft.topics}
                   onChange={(e) => setDraft({ ...draft, topics: e.target.value })}
+                  placeholder="List the topics you need to cover"
                   className={inputCls}
                 />
               </Field>
@@ -213,6 +217,7 @@ function EmergencyWizard() {
                 <input
                   value={draft.hours}
                   onChange={(e) => setDraft({ ...draft, hours: e.target.value })}
+                  placeholder="e.g. 6"
                   className={inputCls}
                 />
               </Field>
